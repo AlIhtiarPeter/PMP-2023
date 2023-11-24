@@ -1,38 +1,39 @@
 import numpy as np
 from pgmpy.factors.discrete import TabularCPD
+from pgmpy.inference import VariableElimination
 from pgmpy.models import BayesianNetwork
 import pymc as pm
 import arviz as az
 import matplotlib.pyplot as plt
 
 def ex1_1():
-    first_player = np.random.rand(20000)
+    first_player = np.random.rand(20000) #generam cine cine incepe jocul
     p0_count = 0
     for i in first_player:
         if i < 0.5: # incepe p0
             p0 = np.random.rand(1)
             n = 0
-            if p0 > 1/3:
+            if p0 > 1/3: #a fost obtinuta stema
                 n = 1
             p1 = np.random.rand(n+1)
             m = 0
             for throw in p1:
-                if throw > 0.5:
+                if throw > 0.5: #a fost obtinuta stema
                     m += 1
             if n >= m:
-                p0_count += 1
+                p0_count += 1 #a castigat p0
         else: #incepe p1
             p1 = np.random.rand(1)
             n = 0
-            if p1 > 1 / 2:
+            if p1 > 1 / 2: #a fost obtinuta stema
                 n = 1
             p0 = np.random.rand(n + 1)
             m = 0
             for throw in p0:
-                if throw > 1/3:
+                if throw > 1/3: #a fost obtinuta stema
                     m += 1
             if n < m:
-                p0_count += 1
+                p0_count += 1 #a castigat p0
     p1_count = 20000 - p0_count
     if p0_count > p1_count:
         print("Jucatorul P0 are sanse mai mari sa castige. Sanse :" + str(p0_count/20000))
@@ -43,7 +44,7 @@ def ex1_1():
 
 
 def ex1_2():
-    model = BayesianNetwork([('P0', 'W'), ('P1', 'W')])
+    model = BayesianNetwork([('P0', 'W'), ('P1', 'W') , ('first', 'R0'), ('first', 'R1'), ('RO', 'R1')])
     CPD_P0 = TabularCPD(variable="P0", variable_card=2, values=[[0.333], [0.667]])
     CPD_P1 = TabularCPD(variable="P1", variable_card=2, values=[[0.5], [0.5]])
     CPD_first = TabularCPD(variable="first", variable_card=2, values=[[0.5], [0.5]])
@@ -58,7 +59,12 @@ def ex1_2():
                                 [0, 0.25, 0, 0.444]],
                         evidence=['first', 'R1'],
                         evidence_card=[2,  2])
+    CPD_W = TabularCPD(variable='W', variable_card=2, values=[[0.66], [0.34]])
+    model.add_cpds(CPD_P0, CPD_P1, CPD_first,CPD_R1,CPD_R2,CPD_W)
 
+
+    inference = VariableElimination(model)
+    p = inference.query(['R1'], evidence={'R2': 0})
 
 def ex2(sigma,mean):
     data = np.random.normal(mean, sigma, 200)
@@ -71,6 +77,6 @@ def ex2(sigma,mean):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    ex2(0.1,10)
+    ex1_2()
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
