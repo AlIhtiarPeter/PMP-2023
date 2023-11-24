@@ -1,10 +1,11 @@
 import numpy as np
-from pgmpy.factors.discrete import TabularCPD
-from pgmpy.inference import VariableElimination
-from pgmpy.models import BayesianNetwork
 import pymc as pm
 import arviz as az
 import matplotlib.pyplot as plt
+from pgmpy.models import BayesianNetwork
+from pgmpy.factors.discrete import TabularCPD
+from pgmpy.inference import VariableElimination
+
 
 def ex1_1():
     first_player = np.random.rand(20000) #generam cine cine incepe jocul
@@ -60,11 +61,11 @@ def ex1_2():
                         evidence=['first', 'R1'],
                         evidence_card=[2,  2])
     CPD_W = TabularCPD(variable='W', variable_card=2, values=[[0.66], [0.34]])
-    model.add_cpds(CPD_P0, CPD_P1, CPD_first,CPD_R1,CPD_R2,CPD_W)
-
+    model.add_cpds(CPD_P0, CPD_P1, CPD_first, CPD_R1, CPD_R2, CPD_W)
 
     inference = VariableElimination(model)
     p = inference.query(['R1'], evidence={'R2': 0})
+
 
 def ex2(sigma,mean):
     data = np.random.normal(mean, sigma, 200)
@@ -72,11 +73,9 @@ def ex2(sigma,mean):
     plt.show()
     with pm.Model() as model:
         mean_time = pm.Poisson('poisson', mu=10)
+        s = (mean_time - 10) ^ 2
         trace = pm.sample(200)
+    az.plot_posterior(trace)
+    plt.show()
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    ex1_2()
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
