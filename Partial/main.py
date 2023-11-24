@@ -2,9 +2,9 @@ import numpy as np
 import pymc as pm
 import arviz as az
 import matplotlib.pyplot as plt
-from pgmpy.models import BayesianNetwork
-from pgmpy.factors.discrete import TabularCPD
-from pgmpy.inference import VariableElimination
+#from pgmpy.models import BayesianNetwork
+#from pgmpy.factors.discrete import TabularCPD
+#from pgmpy.inference import VariableElimination
 
 
 def ex1_1():
@@ -78,4 +78,5 @@ def ex2(sigma,mean):
     az.plot_posterior(trace)
     plt.show()
 
-
+if __name__ == '__main__':
+    ex2(0.1,10)
