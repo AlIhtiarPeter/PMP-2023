@@ -30,13 +30,16 @@ def func():
         idata = pm.sample(2000)
 
     az.plot_trace(idata, var_names=['β1', 'β2','d'])
-
+    
     b_p1 = idata.posterior['β1'].mean().item()
     b_p2 = idata.posterior['β2'].mean().item()
     a_p = idata.posterior['α'].mean().item()
     delta = np.abs(price - (speed * b_p1 + np.log(hardDrive) * b_p2 + a_p))
     delta = np.array(delta)
     print(np.mean(delta))
+
+    b_p1 = idata.posterior['β1']
+    print(b_p1)
 if __name__ == '__main__':
     func()
 
