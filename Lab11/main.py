@@ -19,21 +19,21 @@ def func():
       means = pm.Normal('means', mu=np.linspace(mix.min(), mix.max(), 2), sigma=10, shape=2)
       std_devs = pm.Uniform('std_devs', lower=0, upper=10, shape=2)
       data_likelihood = pm.NormalMixture('data_likelihood', w=weights, mu=means, sigma=std_devs, observed=mix)
-      trace2 = pm.sample(1, return_inferencedata=True)
+      trace2 = pm.sample(2000, return_inferencedata=True)
 
     with pm.Model() as model3:
       weights = pm.Dirichlet('weights', np.ones(3))
       means = pm.Normal('means', mu=np.linspace(mix.min(), mix.max(), 3), sigma=10, shape=3)
       std_devs = pm.Uniform('std_devs', lower=0, upper=10, shape=3)
       data_likelihood = pm.NormalMixture('data_likelihood', w=weights, mu=means, sigma=std_devs, observed=mix)
-      trace3 = pm.sample(1, return_inferencedata=True)
+      trace3 = pm.sample(2000, return_inferencedata=True)
 
     with pm.Model() as model4:
       weights = pm.Dirichlet('weights', np.ones(4))
       means = pm.Normal('means', mu=np.linspace(mix.min(), mix.max(), 4), sigma=10, shape=4)
       std_devs = pm.Uniform('std_devs', lower=0, upper=10, shape=4)
       data_likelihood = pm.NormalMixture('data_likelihood', w=weights, mu=means, sigma=std_devs, observed=mix)
-      trace4 = pm.sample(1, return_inferencedata=True)
+      trace4 = pm.sample(2000, return_inferencedata=True)
 
     pm.compute_log_likelihood(trace2, model=model2)
     pm.compute_log_likelihood(trace3, model=model3)
