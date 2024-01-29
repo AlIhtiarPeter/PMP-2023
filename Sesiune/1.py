@@ -45,6 +45,7 @@ plt.ylabel("pclass")
 plt.show()
 
 preds = []
+preds1 = []
 for i in range(len(proc_ages)):
   obs_std1 = [proc_ages[i], proc_pclass[i]]
   sigmoid = lambda x: 1 / (1 + np.exp(-x))
@@ -52,6 +53,7 @@ for i in range(len(proc_ages)):
   mu = posterior_g['alpha'] + posterior_g['beta'][0]*obs_std1[0] + posterior_g['beta'][1]*obs_std1[1]
   theta = sigmoid(mu)
   pred = theta.values.mean()
+  preds1.append(pred)
   if(pred < 0.5):
     preds.append(0)
   else:
@@ -62,7 +64,13 @@ plt.scatter(proc_ages, proc_pclass, c=[f"C{x}" for x in preds])
 plt.xlabel("ages")
 plt.ylabel("pclass")
 
+plt.show()
 
+
+plt.plot(preds1)
+plt.show()
+
+#1c
 #Din grafic rezulta ca pclass influenteaza mai mult rezultatul.
 #Daca clasa este mai mare, probabilitatea ca survived sa fie egal cu 1 scade
 #Daca pclass este mai mare ca unu sansele de supravietuire sunt mereu mai mici de 0.5
